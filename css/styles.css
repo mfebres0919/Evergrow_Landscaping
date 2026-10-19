@@ -1317,8 +1317,8 @@ html:not(.js) .testimonials__reviews {
 
 
 /* ==========================================================================
-   CONTACT / QUOTE — dark info panel on the left, the step-by-step quote
-   form on the right (script.js runs the steps, photos and hours badge).
+   CONTACT / QUOTE — phones: the step-by-step quote form first, then the
+   dark info panel; desktop: info panel left, form right (script.js runs the steps, photos and hours badge).
    ========================================================================== */
 
 .contact {
@@ -2287,8 +2287,10 @@ textarea.field__input {
     gap: 2rem;
   }
 
-  /* Pinned beside the form while scrolling (sticky) */
+  /* Desktop: info panel back on the left (phones get the form first),
+     pinned beside the form while scrolling (sticky) */
   .contact-info {
+    order: -1;
     position: sticky;
     top: calc(var(--header-height) + 1.5rem);
     align-self: start;

@@ -689,10 +689,12 @@
     </section>
 
     <!-- ========================================================================
-         CONTACT / QUOTE — left: how to reach us and office hours over a
+         CONTACT / QUOTE — the form comes first on phones; on desktop the info
+         panel moves to the left (order in styles.css). Info: how to reach us
+         and office hours over a
          front-yard photo under a forest wash; on desktop it stays pinned
          (sticky) beside the form while you scroll (the
-         "Open now" badge is worked out in script.js). Right: a four-step
+         "Open now" badge is worked out in script.js). Form: a four-step
          quote form (script.js): 1 service (auto-advances), 2 multiple-choice
          questions for that service plus property type and contact method,
          shown two at a time,
@@ -705,46 +707,6 @@
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div class="container contact__inner">
 
-        <aside class="contact-info">
-          <picture class="contact-info__bg" aria-hidden="true">
-            <source media="(max-width: 767px)" type="image/webp" sizes="100vw"
-                    srcset="images/front-yard-mobile-780.webp 780w, images/front-yard-mobile-1170.webp 1170w">
-            <img src="images/front-yard-1600.webp" srcset="images/front-yard-1600.webp 1600w" sizes="40vw"
-                 alt="" width="1600" height="900" loading="lazy" decoding="async">
-          </picture>
-          <p class="eyebrow eyebrow--light">Get in Touch</p>
-          <h2 class="section-title section-title--light" id="contact-title">Let&rsquo;s Talk About <span class="section-title__accent">Your Yard</span></h2>
-          <p class="section-intro section-intro--light">Tell us what you need and we&rsquo;ll send a free, no-obligation quote. Prefer to talk? Call or email us any time.</p>
-
-          <ul class="contact-info__list">
-            <li>
-              <span class="contact-info__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z" /></svg></span>
-              <span><span class="contact-info__label">Phone</span><a class="contact-info__value" href="tel:+15550142290">(555) 014-2290</a></span>
-            </li>
-            <li>
-              <span class="contact-info__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></svg></span>
-              <span><span class="contact-info__label">Email</span><a class="contact-info__value" href="mailto:hello@evergrowlawn.com">hello@evergrowlawn.com</a></span>
-            </li>
-            <li>
-              <span class="contact-info__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></span>
-              <span><span class="contact-info__label">Location</span><span class="contact-info__value">Springfield &amp; surrounding areas</span></span>
-            </li>
-          </ul>
-
-          <div class="contact-hours">
-            <div class="contact-hours__head">
-              <span class="contact-hours__title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg> Office Hours</span>
-              <span class="contact-hours__status" id="hours-status" hidden></span>
-            </div>
-            <dl class="contact-hours__list" id="hours-list">
-              <div data-days="1-5" data-open="7" data-close="18"><dt>Mon &ndash; Fri</dt><dd>7:00 AM &ndash; 6:00 PM</dd></div>
-              <div data-days="6" data-open="8" data-close="14"><dt>Saturday</dt><dd>8:00 AM &ndash; 2:00 PM</dd></div>
-              <div data-days="0"><dt>Sunday</dt><dd>Closed</dd></div>
-            </dl>
-          </div>
-
-          <p class="contact-info__note">We reply to every quote request within 1 business day.</p>
-        </aside>
 
         <div class="quote">
           <form class="quote__form" id="quote-form" name="quote" method="POST" action="/" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="company" novalidate>
@@ -1154,6 +1116,47 @@
             </div>
           </form>
         </div>
+
+        <aside class="contact-info">
+          <picture class="contact-info__bg" aria-hidden="true">
+            <source media="(max-width: 767px)" type="image/webp" sizes="100vw"
+                    srcset="images/front-yard-mobile-780.webp 780w, images/front-yard-mobile-1170.webp 1170w">
+            <img src="images/front-yard-1600.webp" srcset="images/front-yard-1600.webp 1600w" sizes="40vw"
+                 alt="" width="1600" height="900" loading="lazy" decoding="async">
+          </picture>
+          <p class="eyebrow eyebrow--light">Get in Touch</p>
+          <h2 class="section-title section-title--light" id="contact-title">Let&rsquo;s Talk About <span class="section-title__accent">Your Yard</span></h2>
+          <p class="section-intro section-intro--light">Tell us what you need and we&rsquo;ll send a free, no-obligation quote. Prefer to talk? Call or email us any time.</p>
+
+          <ul class="contact-info__list">
+            <li>
+              <span class="contact-info__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z" /></svg></span>
+              <span><span class="contact-info__label">Phone</span><a class="contact-info__value" href="tel:+15550142290">(555) 014-2290</a></span>
+            </li>
+            <li>
+              <span class="contact-info__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></svg></span>
+              <span><span class="contact-info__label">Email</span><a class="contact-info__value" href="mailto:hello@evergrowlawn.com">hello@evergrowlawn.com</a></span>
+            </li>
+            <li>
+              <span class="contact-info__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg></span>
+              <span><span class="contact-info__label">Location</span><span class="contact-info__value">Springfield &amp; surrounding areas</span></span>
+            </li>
+          </ul>
+
+          <div class="contact-hours">
+            <div class="contact-hours__head">
+              <span class="contact-hours__title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg> Office Hours</span>
+              <span class="contact-hours__status" id="hours-status" hidden></span>
+            </div>
+            <dl class="contact-hours__list" id="hours-list">
+              <div data-days="1-5" data-open="7" data-close="18"><dt>Mon &ndash; Fri</dt><dd>7:00 AM &ndash; 6:00 PM</dd></div>
+              <div data-days="6" data-open="8" data-close="14"><dt>Saturday</dt><dd>8:00 AM &ndash; 2:00 PM</dd></div>
+              <div data-days="0"><dt>Sunday</dt><dd>Closed</dd></div>
+            </dl>
+          </div>
+
+          <p class="contact-info__note">We reply to every quote request within 1 business day.</p>
+        </aside>
 
       </div>
     </section>
