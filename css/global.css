@@ -1,0 +1,987 @@
+/* ==========================================================================
+   EVERGROW — GLOBAL STYLES
+   Tokens, reset, layout helpers, buttons, photo slots and the header.
+   Homepage sections live in styles.css.
+   ========================================================================== */
+
+/* ---------- Font (self-hosted; one variable file covers 200–800) ---------- */
+@font-face {
+  font-family: 'Manrope';
+  src: url('../fonts/manrope-latin-variable.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ==========================================================================
+   DESIGN TOKENS — dark forest green with sage accents on a warm off-white
+   ========================================================================== */
+
+:root {
+  /* Colors */
+  --color-forest-950: #0f1f16; /* deepest: hero wash, text on sage */
+  --color-forest-900: #16291d; /* primary dark: buttons, icon discs */
+  --color-forest-700: #2a4a33;
+  --color-sage: #8a9c63; /* rating card, sage buttons */
+  --color-sage-dark: #74874f;
+  --color-sage-light: #c5d3a2; /* accent text on dark */
+  --color-sage-mist: #eef1e4; /* tinted surfaces on light */
+  --color-cream: #f5f4ee; /* page background */
+  --color-white: #ffffff;
+  --color-ink: #17201a;
+  --color-muted: #5b6459;
+  --color-border: #dfe2d6;
+
+  /* Type */
+  --font-body: 'Manrope', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Layout */
+  --container-width: 1280px;
+  --gutter: 1.25rem;
+  --header-height: 4.75rem;
+  --radius: 0.75rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2.25rem;
+  --shadow-card: 0 24px 50px rgba(15, 31, 22, 0.14);
+  --transition: 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 2rem;
+    --header-height: 5.75rem;
+  }
+}
+
+
+/* ---------- Reset ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-ink);
+  background-color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-sage);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius);
+  background-color: var(--color-forest-900);
+  color: var(--color-white);
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container-width) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+
+/* ==========================================================================
+   BUTTONS — pills. --arrow adds a trailing arrow that nudges on hover.
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.btn svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  transition: transform var(--transition);
+}
+
+.btn--arrow:hover svg {
+  transform: translateX(3px);
+}
+
+.btn--primary {
+  background-color: var(--color-forest-900);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-forest-700);
+}
+
+.btn--sage {
+  background-color: var(--color-sage);
+  color: var(--color-white);
+}
+
+.btn--sage:hover {
+  background-color: var(--color-sage-dark);
+}
+
+/* See-through button for dark photos */
+.btn--ghost {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: var(--color-white);
+}
+
+.btn--ghost:hover {
+  border-color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn--outline {
+  border-color: var(--color-border);
+  color: var(--color-ink);
+}
+
+.btn--outline:hover {
+  border-color: var(--color-forest-900);
+}
+
+
+/* ==========================================================================
+   PHOTO SLOT — stands in for a photo until one is uploaded: a forest-green
+   gradient with a faint image icon. Drop a <picture> or <img> inside.
+   ========================================================================== */
+
+.photo-slot {
+  position: relative;
+  overflow: hidden;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c5d3a2' stroke-opacity='0.55' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='9' cy='9' r='2'/%3E%3Cpath d='m21 15-3.09-3.09a2 2 0 0 0-2.82 0L6 21'/%3E%3C/svg%3E") center / 3rem no-repeat,
+    linear-gradient(135deg, #2f5139 0%, #1c3424 55%, #13261b 100%);
+}
+
+.photo-slot picture,
+.photo-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* ==========================================================================
+   HEADER
+   Fixed. Over the hero it's see-through with a faint line along its foot;
+   .is-scrolled (global.js) turns it solid white with dark text.
+   Mobile: logo, call icon and a menu button; the links drop down in a panel.
+   ========================================================================== */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  color: var(--color-white);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.header.is-scrolled,
+.header.is-open {
+  background-color: var(--color-white);
+  color: var(--color-ink);
+  border-bottom-color: transparent;
+  box-shadow: 0 8px 30px rgba(15, 31, 22, 0.08);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: var(--header-height);
+}
+
+/* ---------- Logo ---------- */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-right: auto;
+}
+
+.logo__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background-color: var(--color-sage);
+  color: var(--color-white);
+}
+
+.logo__mark svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.logo__tag {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* ---------- Mobile menu panel ---------- */
+
+.nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 0.5rem var(--gutter) 1.75rem;
+  background-color: var(--color-white);
+  color: var(--color-ink);
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 20px 30px rgba(15, 31, 22, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.5rem);
+  transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+}
+
+.header.is-open .nav {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.nav__link {
+  display: block;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--color-border);
+  font-weight: 600;
+}
+
+.nav__link[aria-current] {
+  color: var(--color-sage-dark);
+}
+
+.nav__quote {
+  align-self: flex-start;
+}
+
+/* ---------- Call button ---------- */
+
+.header__call {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.header__call-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  background-color: var(--color-sage);
+  color: var(--color-white);
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.header__call:hover .header__call-icon {
+  background-color: var(--color-sage-dark);
+  transform: rotate(-8deg);
+}
+
+.header__call-icon svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+/* Number shows from tablets up; phones get the icon alone */
+.header__call-text {
+  display: none;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.header__call-label {
+  font-size: 0.8125rem;
+  opacity: 0.8;
+}
+
+.header__call-number {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+/* ---------- Menu button ---------- */
+
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0 0.625rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.nav-toggle__bar {
+  height: 2px;
+  border-radius: 2px;
+  background-color: currentColor;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.header.is-open .nav-toggle__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.header.is-open .nav-toggle__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.header.is-open .nav-toggle__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (min-width: 640px) {
+  .header__call-text {
+    display: flex;
+  }
+}
+
+/* ---------- Desktop: links in a row, menu button gone ---------- */
+
+@media (min-width: 1024px) {
+  .header__inner {
+    gap: 2rem;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    background: none;
+    color: inherit;
+    border: 0;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav__list {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .nav__link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    border: 0;
+    font-size: 1rem;
+    transition: color var(--transition);
+  }
+
+  /* Small dot under the current section's link, as in the reference */
+  .nav__link[aria-current] {
+    color: inherit;
+  }
+
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -0.125rem;
+    width: 0.3125rem;
+    height: 0.3125rem;
+    margin-left: -0.15625rem;
+    border-radius: 50%;
+    background-color: var(--color-sage-light);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity var(--transition), transform var(--transition);
+  }
+
+  .nav__link:hover::after,
+  .nav__link[aria-current]::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .header.is-scrolled .nav__link::after {
+    background-color: var(--color-sage);
+  }
+
+  /* The call button carries the CTA on desktop */
+  .nav__quote {
+    display: none;
+  }
+
+  .header__call {
+    padding-left: 2rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+    transition: border-color var(--transition);
+  }
+
+  .header.is-scrolled .header__call {
+    border-left-color: var(--color-border);
+  }
+}
+
+
+/* ==========================================================================
+   SECTION HEADING — centred pill eyebrow, two-tone title, short intro.
+   ========================================================================== */
+
+.section-head {
+  max-width: 44rem;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background-color: var(--color-sage-mist);
+  color: var(--color-forest-900);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  margin-top: 1rem;
+  font-size: clamp(2.25rem, 4vw + 1rem, 3.75rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-forest-900);
+}
+
+.section-title__accent {
+  color: var(--color-sage-dark);
+}
+
+.section-intro {
+  margin-top: 1rem;
+  color: var(--color-muted);
+}
+
+@media (min-width: 1024px) {
+  .section-head {
+    margin-bottom: 3.5rem;
+  }
+}
+
+/* Light variants for headings on dark photos */
+.eyebrow--light {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-sage-light);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.section-title--light {
+  color: var(--color-white);
+}
+
+.section-title--light .section-title__accent {
+  color: var(--color-sage-light);
+}
+
+.section-intro--light {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Hidden on screen, still read by screen readers */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The hidden attribute always wins, even over components that set display */
+[hidden] {
+  display: none !important;
+}
+
+
+/* ==========================================================================
+   FOOTER — CTA band with grass along its top edge, brand and link columns,
+   then copyright and back to top.
+   ========================================================================== */
+
+.footer {
+  position: relative;
+  margin-top: 2rem;
+  padding-top: 4rem;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 0% 0%, rgba(138, 156, 99, 0.22), transparent 70%),
+    var(--color-forest-950);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Grass growing up from the footer's top edge */
+.footer__grass {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 5rem;
+  margin-bottom: -0.4rem;
+  padding-inline: var(--radius-xl);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.footer__grass span {
+  flex-shrink: 0;
+  width: var(--h);
+  height: var(--h);
+  margin-inline: -0.5rem;
+  background-color: var(--color-forest-950);
+  -webkit-mask: url("../images/svg-backgrounds/grass-tuft.svg") bottom / contain no-repeat;
+  mask: url("../images/svg-backgrounds/grass-tuft.svg") bottom / contain no-repeat;
+  transform-origin: 50% 100%;
+  animation: grass-sway var(--t, 4s) ease-in-out var(--d, 0s) infinite alternate;
+}
+
+.footer__grass span:nth-child(3n) {
+  background-color: var(--color-forest-700);
+}
+
+@keyframes grass-sway {
+  from { transform: rotate(-3deg) skewX(-2deg); }
+  to { transform: rotate(3deg) skewX(2deg); }
+}
+
+@media (max-width: 767px) {
+  .footer__grass span:nth-child(even) {
+    display: none;
+  }
+}
+
+/* ---------- CTA band ---------- */
+.footer-cta {
+  display: grid;
+  gap: 1.5rem;
+  padding: 2rem 1.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.footer-cta__title {
+  font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-white);
+}
+
+.footer-cta__title span {
+  color: var(--color-sage-light);
+}
+
+.footer-cta__text {
+  margin-top: 0.5rem;
+}
+
+.footer-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.footer-cta__actions .btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ---------- Columns ---------- */
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem 1.5rem;
+  padding: 3.5rem 0 3rem;
+}
+
+.footer__brand {
+  grid-column: 1 / -1;
+}
+
+.footer .logo {
+  color: var(--color-white);
+}
+
+.footer__blurb {
+  max-width: 22rem;
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+}
+
+.footer__social {
+  display: flex;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
+}
+
+.footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  color: var(--color-white);
+  transition: background-color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.footer__social a:hover {
+  border-color: var(--color-sage);
+  background-color: var(--color-sage);
+  transform: translateY(-3px);
+}
+
+.footer__social svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.footer__heading {
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-sage-light);
+}
+
+.footer__links {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.footer__links a {
+  position: relative;
+  transition: color var(--transition), padding var(--transition);
+}
+
+/* A small leaf-green dash slides in before the link on hover */
+.footer__links a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--color-sage);
+  transition: width var(--transition);
+}
+
+.footer__links a:hover {
+  padding-left: 1rem;
+  color: var(--color-white);
+}
+
+.footer__links a:hover::before {
+  width: 0.625rem;
+}
+
+.footer__contact {
+  display: grid;
+  gap: 0.875rem;
+  font-size: 0.9375rem;
+}
+
+.footer__contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.footer__contact svg {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.15rem;
+  color: var(--color-sage-light);
+}
+
+.footer__contact a {
+  overflow-wrap: anywhere;
+}
+
+.footer__contact a:hover {
+  color: var(--color-white);
+}
+
+.footer__col:last-child {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Bottom bar ---------- */
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 0 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.875rem;
+}
+
+.footer__top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+.footer__top-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: var(--color-sage);
+  transition: transform var(--transition);
+}
+
+.footer__top:hover .footer__top-icon {
+  transform: translateY(-3px);
+}
+
+.footer__top-icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (min-width: 768px) {
+  .footer-cta {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 2.5rem;
+  }
+
+  .footer__grid {
+    grid-template-columns: 1.6fr 1fr 1fr 1.6fr;
+    gap: 2rem;
+  }
+
+  .footer__brand,
+  .footer__col:last-child {
+    grid-column: auto;
+  }
+}
+
+/* ==========================================================================
+   BACK TO TOP — fixed bottom right, fades in after the hero. The ring fills
+   with how far down the page you are (global.js sets --scroll, 0 to 1).
+   ========================================================================== */
+
+.to-top {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--color-forest-900);
+  color: var(--color-white);
+  box-shadow: 0 12px 28px rgba(15, 31, 22, 0.28);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1rem) scale(0.9);
+  transition: opacity 0.3s ease, visibility 0.3s, transform 0.3s ease, background-color var(--transition);
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.to-top:hover {
+  background-color: var(--color-forest-700);
+}
+
+.to-top__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.to-top__ring circle {
+  fill: none;
+  stroke-width: 2.5;
+}
+
+.to-top__track {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+
+.to-top__fill {
+  stroke: var(--color-sage-light);
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--scroll, 0) * 100);
+  stroke-linecap: round;
+}
+
+.to-top > svg:last-child {
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform var(--transition);
+}
+
+.to-top:hover > svg:last-child {
+  transform: translateY(-2px);
+}
+
+@media (min-width: 1024px) {
+  .to-top {
+    right: 2rem;
+    bottom: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer__grass span {
+    animation: none;
+  }
+
+  .to-top {
+    transition: opacity 0.3s ease, visibility 0.3s;
+    transform: none;
+  }
+}
