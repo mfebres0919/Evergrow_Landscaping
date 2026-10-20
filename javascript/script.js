@@ -360,19 +360,34 @@ function loopCarousel({ root, track, interval, align = () => 0, peekLeft = false
     }
   });
 
-  /* ---------- Step 1: the service picks which questions show ---------- */
+  /* ---------- Step 1: the service picks which questions show ----------
+     Always read from whichever service is ticked, not just on "change":
+     browsers can restore a ticked service on reload or Back without
+     firing any event, and re-clicking the chosen tile isn't a change. */
+  function applyService() {
+    const picked = form.querySelector('input[name="service"]:checked');
+    form.querySelectorAll('.quote-group').forEach((group) => {
+      const on = Boolean(picked) && group.dataset.for === picked.dataset.service;
+      group.disabled = !on;
+      group.hidden = !on;
+    });
+    buildPages();
+  }
+
+  let advancing = null;
   form.querySelectorAll('input[name="service"]').forEach((radio) => {
-    radio.addEventListener('change', () => {
-      form.querySelectorAll('.quote-group').forEach((group) => {
-        const on = group.dataset.for === radio.dataset.service;
-        group.disabled = !on;
-        group.hidden = !on;
-      });
-      buildPages();
+    // "click" fires for a fresh pick and for re-clicking the chosen tile
+    radio.addEventListener('click', () => {
+      applyService();
+      clearTimeout(advancing);
       // A short beat so the tick shows before moving on
-      setTimeout(() => show(1), 350);
+      advancing = setTimeout(() => { if (current === 0) show(1); }, 350);
     });
   });
+
+  // Pick up a service the browser restored on load or when coming Back
+  applyService();
+  window.addEventListener('pageshow', applyService);
 
   next.addEventListener('click', () => {
     if (!validate(steps[current])) return;
@@ -382,7 +397,7 @@ function loopCarousel({ root, track, interval, align = () => 0, peekLeft = false
       steps[1].querySelector('.quote-step__title').focus({ preventScroll: true });
       return;
     }
-    if (current === 0) page = 0; // re-entering step 2 starts at its first pair
+    if (current === 0) applyService(); // fresh questions for the ticked service, from the first pair
     show(current + 1);
   });
 
@@ -469,11 +484,21 @@ function loopCarousel({ root, track, interval, align = () => 0, peekLeft = false
         photos.splice(i, 1);
         photoError.textContent = '';
         renderPhotos();
+        picker.disabled = false;
         picker.focus();
       });
       item.append(img, remove);
       previews.append(item);
     });
+
+    // The box's prompt: compact with a counter once photos are in, closed when full
+    const full = photos.length >= MAX_PHOTOS;
+    dropzone.classList.toggle('has-photos', photos.length > 0);
+    dropzone.classList.toggle('is-full', full);
+    picker.disabled = full;
+    dropzone.querySelector('[data-photo-title]').textContent =
+      full ? 'All 6 photos added' : photos.length ? 'Add more photos' : 'Tap to add photos';
+    document.getElementById('photo-count').textContent = photos.length ? `${photos.length} / ${MAX_PHOTOS}` : '';
 
     // Netlify reads one file per input, so each photo gets its own field
     slots.forEach((slot, i) => {
@@ -482,6 +507,12 @@ function loopCarousel({ root, track, interval, align = () => 0, peekLeft = false
       slot.files = transfer.files;
     });
   }
+
+  // Clicking anywhere in the box (not a thumbnail) opens the picker too
+  document.getElementById('dropzone-area').addEventListener('click', (event) => {
+    if (event.target.closest('label, .dropzone__previews') || picker.disabled) return;
+    picker.click();
+  });
 
   picker.addEventListener('change', async () => {
     const files = [...picker.files];
@@ -500,21 +531,37 @@ function loopCarousel({ root, track, interval, align = () => 0, peekLeft = false
   }));
   dropzone.addEventListener('drop', (event) => addPhotos([...event.dataTransfer.files]));
 
-  /* ---------- Step 4: chips summing up the answers so far ---------- */
+  /* ---------- Step 4: "Your selections" recap ----------
+     One row per answered question, using the short data-summary label on
+     its fieldset; several picks (checkboxes) are joined with commas. */
   function renderSummary() {
-    const summary = document.getElementById('quote-summary');
-    const picks = [...form.querySelectorAll('input:checked:not(:disabled)')]
-      .filter((input) => input.type === 'radio' || input.type === 'checkbox')
-      .filter((input) => !input.closest('fieldset[disabled]'))
-      .map((input) => input.closest('label').querySelector('.choice__label, .service-choice__name').textContent);
-    if (photos.length) picks.push(`${photos.length} photo${photos.length > 1 ? 's' : ''}`);
-    summary.innerHTML = '';
-    picks.forEach((text) => {
-      const chip = document.createElement('li');
-      chip.textContent = text;
-      summary.append(chip);
+    const list = document.getElementById('quote-summary');
+    const rows = [];
+    const service = form.querySelector('input[name="service"]:checked');
+    if (service) rows.push(['Service', service.value]);
+
+    form.querySelectorAll('fieldset[data-summary]').forEach((question) => {
+      if (question.closest('fieldset[disabled]')) return;
+      const picks = [...question.querySelectorAll('input:checked')]
+        .map((input) => input.closest('label').querySelector('.choice__label').textContent);
+      if (picks.length) rows.push([question.dataset.summary, picks.join(', ')]);
+    });
+    rows.push(['Photos', photos.length ? `${photos.length} added` : 'None']);
+
+    list.innerHTML = '';
+    rows.forEach(([label, value]) => {
+      const row = document.createElement('div');
+      const dt = document.createElement('dt');
+      const dd = document.createElement('dd');
+      dt.textContent = label;
+      dd.textContent = value;
+      row.append(dt, dd);
+      list.append(row);
     });
   }
+
+  // Edit goes back to the start; answers are kept
+  form.querySelector('[data-quote="edit"]').addEventListener('click', () => show(0));
 
   /* ---------- Sending ---------- */
   form.addEventListener('submit', async (event) => {

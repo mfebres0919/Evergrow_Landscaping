@@ -1874,15 +1874,13 @@ a.contact-info__value:hover {
 .dropzone__area {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 2rem 1rem;
   border: 2px dashed var(--color-border);
   border-radius: var(--radius-lg);
   background-color: var(--color-cream);
-  text-align: center;
   cursor: pointer;
-  transition: border-color var(--transition), background-color var(--transition);
+  transition: border-color var(--transition), background-color var(--transition), padding var(--transition);
 }
 
 .dropzone__area:hover,
@@ -1896,8 +1894,25 @@ a.contact-info__value:hover {
   outline-offset: 2px;
 }
 
+/* Empty: a centred prompt */
+.dropzone__prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropzone__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
 .dropzone__icon {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 3.25rem;
@@ -1905,7 +1920,7 @@ a.contact-info__value:hover {
   border-radius: 50%;
   background-color: var(--color-forest-900);
   color: var(--color-sage-light);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), width var(--transition), height var(--transition);
 }
 
 .dropzone__icon svg {
@@ -1931,11 +1946,63 @@ a.contact-info__value:hover {
   color: var(--color-muted);
 }
 
+.dropzone__count {
+  display: none;
+  margin-left: auto;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background-color: var(--color-white);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--color-forest-900);
+}
+
+/* With photos: the prompt shrinks to one row above the thumbnails */
+.dropzone.has-photos .dropzone__area {
+  padding: 1rem;
+}
+
+.dropzone.has-photos .dropzone__prompt {
+  flex-direction: row;
+  text-align: left;
+  gap: 0.75rem;
+}
+
+.dropzone.has-photos .dropzone__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.dropzone.has-photos .dropzone__icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.dropzone.has-photos .dropzone__hint,
+.dropzone.has-photos .dropzone__or {
+  display: none;
+}
+
+.dropzone.has-photos .dropzone__count {
+  display: block;
+}
+
+/* All six added: no more picking */
+.dropzone.is-full .dropzone__area {
+  cursor: default;
+}
+
+.dropzone.is-full .dropzone__icon {
+  background-color: var(--color-sage);
+  color: var(--color-white);
+}
+
 .dropzone__previews {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.625rem;
-  margin-top: 0.875rem;
+  cursor: default;
 }
 
 .dropzone__previews:empty {
@@ -1999,24 +2066,85 @@ a.contact-info__value:hover {
 }
 
 /* ---------- Typed details (step 4) ---------- */
+/* "Your selections" recap at the top of step 4 */
 .quote-summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.875rem;
-}
-
-.quote-summary:empty {
-  display: none;
-}
-
-.quote-summary li {
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
+  margin-top: 1.25rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   background-color: var(--color-sage-mist);
+}
+
+.quote-summary__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(15, 31, 22, 0.08);
+}
+
+.quote-summary__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--color-forest-900);
+}
+
+.quote-summary__title svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--color-forest-700);
+}
+
+.quote-summary__edit {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-forest-700);
+  cursor: pointer;
+}
+
+.quote-summary__edit:hover {
+  color: var(--color-forest-900);
+}
+
+.quote-summary__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem 1.5rem;
+}
+
+.quote-summary__list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9375rem;
+}
+
+.quote-summary__list dt {
+  color: var(--color-muted);
+}
+
+.quote-summary__list dd {
+  font-weight: 600;
+  text-align: right;
+  color: var(--color-ink);
+}
+
+@media (min-width: 640px) {
+  .quote-summary__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .quote-fields {

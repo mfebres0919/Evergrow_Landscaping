@@ -777,7 +777,7 @@
               <p class="quote-step__text">A few quick taps so we can price it right.</p>
               <p class="quote-step__count" id="quote-count"></p>
               <fieldset class="quote-group" data-for="lawn" disabled hidden>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Lawn size">
                     <legend class="quote-q__title">How big is the lawn?</legend>
                     <div class="choices choices--2">
                       <label class="choice">
@@ -798,7 +798,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="How often">
                     <legend class="quote-q__title">How often should we mow?</legend>
                     <div class="choices choices--2">
                       <label class="choice">
@@ -819,7 +819,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Condition">
                     <legend class="quote-q__title">What shape is it in now?</legend>
                     <div class="choices choices--3">
                       <label class="choice">
@@ -836,7 +836,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Extras">
                     <legend class="quote-q__title">Any extras? <span class="quote-q__note">Pick any</span></legend>
                     <div class="choices choices--2">
                       <label class="choice">
@@ -859,7 +859,7 @@
                   </fieldset>
               </fieldset>
               <fieldset class="quote-group" data-for="gardening" disabled hidden>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Needs">
                     <legend class="quote-q__title">What do your beds need? <span class="quote-q__note">Pick any</span></legend>
                     <div class="choices choices--2">
                       <label class="choice">
@@ -888,7 +888,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Garden size">
                     <legend class="quote-q__title">How much garden is there?</legend>
                     <div class="choices choices--3">
                       <label class="choice">
@@ -905,7 +905,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="How often">
                     <legend class="quote-q__title">How often?</legend>
                     <div class="choices choices--3">
                       <label class="choice">
@@ -924,7 +924,7 @@
                   </fieldset>
               </fieldset>
               <fieldset class="quote-group" data-for="design" disabled hidden>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Project">
                     <legend class="quote-q__title">What are you planning? <span class="quote-q__note">Pick any</span></legend>
                     <div class="choices choices--2">
                       <label class="choice">
@@ -953,7 +953,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Area">
                     <legend class="quote-q__title">Which part of the yard?</legend>
                     <div class="choices choices--3">
                       <label class="choice">
@@ -970,7 +970,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Budget">
                     <legend class="quote-q__title">Rough budget?</legend>
                     <div class="choices choices--2">
                       <label class="choice">
@@ -991,7 +991,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Start">
                     <legend class="quote-q__title">When would you like to start?</legend>
                     <div class="choices choices--2">
                       <label class="choice">
@@ -1014,7 +1014,7 @@
                   </fieldset>
               </fieldset>
               
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Property">
                     <legend class="quote-q__title">What kind of property is it?</legend>
                     <div class="choices choices--3">
                       <label class="choice">
@@ -1031,7 +1031,7 @@
                       </label>
                     </div>
                   </fieldset>
-                  <fieldset class="quote-q">
+                  <fieldset class="quote-q" data-summary="Contact by">
                     <legend class="quote-q__title">Best way to reach you?</legend>
                     <div class="choices choices--3">
                       <label class="choice">
@@ -1056,12 +1056,18 @@
               <p class="quote-step__text">Photos help us see what we&rsquo;re working with, so your quote is more accurate. Up to 6 photos, 10 MB each.</p>
               <div class="dropzone" id="dropzone">
                 <input class="dropzone__input" type="file" id="photo-picker" accept="image/*" multiple>
-                <label class="dropzone__area" for="photo-picker">
-                  <span class="dropzone__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg></span>
-                  <span class="dropzone__title"><strong>Tap to add photos</strong> <span class="dropzone__or">or drag them here</span></span>
-                  <span class="dropzone__hint">JPG, PNG or HEIC &middot; wide shots of the whole area work best</span>
-                </label>
-                <ul class="dropzone__previews" id="photo-previews"></ul>
+                <!-- The dashed box holds the prompt and, once added, the photo thumbnails -->
+                <div class="dropzone__area" id="dropzone-area">
+                  <label class="dropzone__prompt" for="photo-picker">
+                    <span class="dropzone__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg></span>
+                    <span class="dropzone__copy">
+                      <span class="dropzone__title"><strong data-photo-title>Tap to add photos</strong> <span class="dropzone__or">or drag them here</span></span>
+                      <span class="dropzone__hint">JPG, PNG or HEIC &middot; wide shots of the whole area work best</span>
+                    </span>
+                    <span class="dropzone__count" id="photo-count" aria-live="polite"></span>
+                  </label>
+                  <ul class="dropzone__previews" id="photo-previews"></ul>
+                </div>
                 <p class="dropzone__error" id="photo-error" role="alert"></p>
                   <input class="visually-hidden" type="file" name="photo_1" accept="image/*" tabindex="-1" aria-hidden="true" data-photo-slot>
                   <input class="visually-hidden" type="file" name="photo_2" accept="image/*" tabindex="-1" aria-hidden="true" data-photo-slot>
@@ -1075,7 +1081,14 @@
             <!-- Step 4: typed details last -->
             <section class="quote-step" data-step="4" aria-labelledby="qs4" hidden>
               <h3 class="quote-step__title" id="qs4" tabindex="-1">Where should we send your quote?</h3>
-              <ul class="quote-summary" id="quote-summary" aria-label="Your answers so far"></ul>
+              <!-- Recap of the answers so far (script.js fills the list) -->
+              <div class="quote-summary">
+                <div class="quote-summary__head">
+                  <span class="quote-summary__title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg> Your selections</span>
+                  <button class="quote-summary__edit" type="button" data-quote="edit">Edit</button>
+                </div>
+                <dl class="quote-summary__list" id="quote-summary"></dl>
+              </div>
               <div class="quote-fields">
                 <div class="field">
                   <label class="field__label" for="q-name">Full name</label>
